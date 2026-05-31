@@ -42,6 +42,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
     testImplementation(libs.junit)
+    implementation(project(":effect-core"))
+    implementation(project(":effect-svga"))
+    implementation(project(":effect-mp4-vap"))
+    implementation(project(":effect-gif-glide"))
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 }
