@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.chat.effect.EffectManager.attach
 import com.chat.effect.EffectManager.detach
-import com.common.utils.effect.EffectChannel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

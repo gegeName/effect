@@ -2,7 +2,6 @@ package com.chat.effect
 
 import androidx.core.net.toUri
 import com.chat.effect.EffectType.Companion.fromUrl
-import com.common.utils.effect.EffectChannel
 
 /**
  * 特效资源类型。**可扩展**：内置 [SVGA] / [MP4] / [GIF]，业务可通过继承 [EffectType] 注册自定义类型

@@ -1,4 +1,4 @@
-package com.common.utils.effect
+package com.chat.effect
 
 /**
  * 播放通道。**多通道并发播放**用,同一 stage 上可以有多个通道同时在播,

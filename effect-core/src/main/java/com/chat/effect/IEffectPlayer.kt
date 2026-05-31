@@ -1,7 +1,6 @@
 package com.chat.effect
 
 import android.view.ViewGroup
-import com.common.utils.effect.EffectChannel
 
 /**
  * 单次播放结果回调。框架在收到任一回调后会进入下一条队列项。

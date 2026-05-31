@@ -1,7 +1,5 @@
 package com.chat.effect
 
-import com.common.utils.effect.EffectChannel
-
 /**
  * 播放事件监听器。所有回调都在 **Main 线程**，可直接更新 UI。
  */
