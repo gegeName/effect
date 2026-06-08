@@ -30,7 +30,7 @@ afterEvaluate {
 
                 pom {
                     name        = publishArtifactId
-                    description = '特效播放框架核心：队列调度 / 自动 stage / 断点续传，零三方播放器依赖'
+                    description = '特效播放框架核心：队列调度 / 自动 stage / 断点续传；不包含 SVGA、alpha-MP4/VAP、GIF 播放实现，具体格式需按需引入对应模块'
                     url         = publishUrl
 
                     licenses {

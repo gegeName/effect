@@ -5,7 +5,7 @@ jdk:
   - openjdk17
 
 # 默认 install 命令是 ./gradlew clean install，但 Android Library 没有 install 任务。
-# 这里显式指定发布到 mavenLocal，并只发布需要的子模块。
+# 这里显式指定发布到 mavenLocal，并发布所有可按需引入的子模块。
 # JitPack 会注入 $VERSION 环境变量，把它传给 -PVERSION_NAME 让 jitpack.gradle 取到。
 install:
   - ./gradlew
@@ -17,18 +17,15 @@ install:
 
 
 # 多模块仓库的依赖坐标会变成：
-#   com.github.<USER>.<REPO>:statelayout:<TAG>
-#   com.github.<USER>.<REPO>:mylibrary:<TAG>
-#   com.github.<USER>.<REPO>:pagingutil:<TAG>
-#   com.github.<USER>.<REPO>:shapeview:<TAG>
-#   com.github.<USER>.<REPO>:spanutil:<TAG>
-#   com.github.<USER>.<REPO>:glidespan:<TAG>
-#   com.github.<USER>.<REPO>:svgspan:<TAG>
-#   com.github.<USER>.<REPO>:svgaspan:<TAG>
 #   com.github.<USER>.<REPO>:effect-core:<TAG>
 #   com.github.<USER>.<REPO>:effect-svga:<TAG>
 #   com.github.<USER>.<REPO>:effect-mp4-vap:<TAG>
 #   com.github.<USER>.<REPO>:effect-gif-glide:<TAG>
-#   com.github.<USER>.<REPO>:rv-page:<TAG>
-#   com.github.<USER>.<REPO>:picker:<TAG>
 # （注意是点号，不是冒号）
+#
+# 按需引入说明：
+#   effect-core 只提供队列调度、stage、下载等核心能力，不包含任何播放器实现。
+#   SVGA 功能需要额外引入 effect-svga。
+#   alpha-MP4/VAP 功能需要额外引入 effect-mp4-vap。
+#   GIF/Glide 功能需要额外引入 effect-gif-glide。
+#   未引入对应实现模块时，该格式不会有播放能力，也不会带入对应三方播放器依赖。

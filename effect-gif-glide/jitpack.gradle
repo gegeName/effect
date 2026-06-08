@@ -30,7 +30,7 @@ afterEvaluate {
 
                 pom {
                     name        = publishArtifactId
-                    description = '特效播放框架 GIF 实现，依赖 Glide'
+                    description = '特效播放框架 GIF/Glide 实现；需要 GIF 播放能力时单独引入，依赖 Glide'
                     url         = publishUrl
 
                     licenses {

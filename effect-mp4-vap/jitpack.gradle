@@ -30,7 +30,7 @@ afterEvaluate {
 
                 pom {
                     name        = publishArtifactId
-                    description = '特效播放框架 alpha-MP4 实现，依赖腾讯 VAP (animplayer)'
+                    description = '特效播放框架 alpha-MP4/VAP 实现；需要 MP4 透明特效播放能力时单独引入，依赖腾讯 VAP (animplayer)'
                     url         = publishUrl
 
                     licenses {

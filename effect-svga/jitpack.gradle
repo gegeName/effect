@@ -30,7 +30,7 @@ afterEvaluate {
 
                 pom {
                     name        = publishArtifactId
-                    description = '特效播放框架 SVGA Player 实现，依赖 SVGAPlayer-Android'
+                    description = '特效播放框架 SVGA Player 实现；需要 SVGA 播放能力时单独引入，依赖 SVGAPlayer-Android'
                     url         = publishUrl
 
                     licenses {
