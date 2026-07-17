@@ -2,7 +2,9 @@ package com.chat.effect.svga
 
 
 import android.view.View
+import android.view.Gravity
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import com.chat.effect.EffectIO
 import com.chat.effect.EffectLog
@@ -16,11 +18,12 @@ import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import java.io.File
 import java.io.FileInputStream
+import kotlin.math.roundToInt
 
 /**
  * SVGA 特效播放器实现。
  */
-class SvgaEffectPlayer : IEffectPlayer {
+open class SvgaEffectPlayer : IEffectPlayer {
 
     private companion object {
         const val TAG = "SvgaEffectPlayer"
@@ -42,10 +45,11 @@ class SvgaEffectPlayer : IEffectPlayer {
         this.stage = stage
         view = SVGAImageView(stage.context).apply {
             loops = 1
-            scaleType = ImageView.ScaleType.CENTER_CROP
+            scaleType = ImageView.ScaleType.FIT_CENTER
             isClickable = false
             isFocusable = false
         }
+        view?.let { onPlayerViewCreated(it) }
         stage.addView(
             view,
             ViewGroup.LayoutParams(
@@ -54,6 +58,16 @@ class SvgaEffectPlayer : IEffectPlayer {
             ),
         )
     }
+
+    /**
+     * 返回当前 SVGA 播放控件。子类可在播放前后读取并设置业务侧需要的 View 属性。
+     */
+    protected fun getPlayerView(): SVGAImageView? = view
+
+    /**
+     * SVGA 播放控件创建完成后回调。子类可重写此方法设置 scaleType、层级、透明度等属性。
+     */
+    protected open fun onPlayerViewCreated(view: SVGAImageView) = Unit
 
     override fun play(localPath: String, resource: EffectResource, callback: PlayCallback) {
         val v = view ?: return callback.onError("svga view not attached")
@@ -71,6 +85,7 @@ class SvgaEffectPlayer : IEffectPlayer {
                         if (view !== v) {
                             return
                         }
+                        layoutByVideoSize(v, videoItem)
                         v.setImageDrawable(SVGADrawable(videoItem))
                         v.callback = object : SVGACallback {
                             override fun onFinished() = callback.onComplete()
@@ -93,6 +108,26 @@ class SvgaEffectPlayer : IEffectPlayer {
             EffectLog.e(TAG, e) { "svga play exception url=${resource.url}" }
             callback.onError(e.message ?: "svga play exception")
         }
+    }
+
+    private fun layoutByVideoSize(v: SVGAImageView, videoItem: SVGAVideoEntity) {
+        val videoWidth = videoItem.videoSize.width
+        val videoHeight = videoItem.videoSize.height
+        if (videoWidth <= 0.0 || videoHeight <= 0.0) return
+
+        val parent = (v.parent as? ViewGroup) ?: stage ?: return
+        val targetWidth = parent.width.takeIf { it > 0 } ?: parent.resources.displayMetrics.widthPixels
+        if (targetWidth <= 0) return
+
+        val targetHeight = (targetWidth * videoHeight / videoWidth).roundToInt()
+        val params = when (val current = v.layoutParams) {
+            is FrameLayout.LayoutParams -> current
+            else -> FrameLayout.LayoutParams(targetWidth, targetHeight)
+        }
+        params.width = targetWidth
+        params.height = targetHeight
+        params.gravity = Gravity.CENTER
+        v.layoutParams = params
     }
 
     override fun release() {
