@@ -39,29 +39,29 @@ dependencyResolutionManagement {
 ```kotlin
 dependencies {
     // 核心能力：队列、stage、下载、缓存
-    implementation("com.github.gegeName:effect-core:0.0.4")
+    implementation("com.github.gegeName:effect-core:0.0.7")
 
     // 需要 SVGA 时引入
-    implementation("com.github.gegeName:effect-svga:0.0.4")
+    implementation("com.github.gegeName:effect-svga:0.0.7")
 
     // 需要 alpha-MP4/VAP 时引入
-    implementation("com.github.gegeName:effect-mp4-vap:0.0.4")
+    implementation("com.github.gegeName:effect-mp4-vap:0.0.7")
 
     // 需要 alpha-MP4/YYEVA 时引入
-    implementation("com.github.gegeName:effect-mp4-yyeva:0.0.4")
+    implementation("com.github.gegeName:effect-mp4-yyeva:0.0.7")
 
     // 需要 alpha-MP4/AlphaPlayer 时引入
-    implementation("com.github.gegeName:effect-mp4-alpha:0.0.4")
+    implementation("com.github.gegeName:effect-mp4-alpha:0.0.7")
 
     // 需要 GIF/Glide 时引入
-    implementation("com.github.gegeName:effect-gif-glide:0.0.4")
+    implementation("com.github.gegeName:effect-gif-glide:0.0.7")
 }
 ```
 
 实现模块会传递依赖 `effect-core`。例如业务只需要 SVGA，可以只引入：
 
 ```kotlin
-implementation("com.github.gegeName:effect-svga:0.0.4")
+implementation("com.github.gegeName:effect-svga:0.0.7")
 ```
 
 ## 快速开始
