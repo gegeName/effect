@@ -11,7 +11,9 @@ install:
   - ./gradlew
     :effect-core:publishToMavenLocal
     :effect-svga:publishToMavenLocal
+    :effect-mp4-alpha:publishToMavenLocal
     :effect-mp4-vap:publishToMavenLocal
+    :effect-mp4-yyeva:publishToMavenLocal
     :effect-gif-glide:publishToMavenLocal
     -PVERSION_NAME=$VERSION
 
@@ -19,13 +21,17 @@ install:
 # 多模块仓库的依赖坐标会变成：
 #   com.github.<USER>.<REPO>:effect-core:<TAG>
 #   com.github.<USER>.<REPO>:effect-svga:<TAG>
+#   com.github.<USER>.<REPO>:effect-mp4-alpha:<TAG>
 #   com.github.<USER>.<REPO>:effect-mp4-vap:<TAG>
+#   com.github.<USER>.<REPO>:effect-mp4-yyeva:<TAG>
 #   com.github.<USER>.<REPO>:effect-gif-glide:<TAG>
 # （注意是点号，不是冒号）
 #
 # 按需引入说明：
 #   effect-core 只提供队列调度、stage、下载等核心能力，不包含任何播放器实现。
 #   SVGA 功能需要额外引入 effect-svga。
+#   alpha-MP4/AlphaPlayer 功能需要额外引入 effect-mp4-alpha。
 #   alpha-MP4/VAP 功能需要额外引入 effect-mp4-vap。
+#   alpha-MP4/YYEVA 功能需要额外引入 effect-mp4-yyeva。
 #   GIF/Glide 功能需要额外引入 effect-gif-glide。
 #   未引入对应实现模块时，该格式不会有播放能力，也不会带入对应三方播放器依赖。

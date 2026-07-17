@@ -1,6 +1,6 @@
 # effect
 
-Android 特效播放框架，核心模块负责队列调度、全屏 stage、资源下载与缓存；SVGA、alpha-MP4/VAP、GIF 播放能力拆成独立实现模块，业务按需引入。
+Android 特效播放框架，核心模块负责队列调度、全屏 stage、资源下载与缓存；SVGA、alpha-MP4、GIF 播放能力拆成独立实现模块，业务按需引入。
 
 ## 模块
 
@@ -8,7 +8,9 @@ Android 特效播放框架，核心模块负责队列调度、全屏 stage、资
 | --- | --- | --- |
 | `effect-core` | 核心队列、stage、下载、缓存、播放调度 | 否 |
 | `effect-svga` | SVGA 播放实现，基于 `SVGAPlayer-Android` | 是 |
+| `effect-mp4-alpha` | alpha-MP4 播放实现，基于字节跳动 AlphaPlayer | 是 |
 | `effect-mp4-vap` | alpha-MP4/VAP 播放实现，基于腾讯 VAP | 是 |
+| `effect-mp4-yyeva` | alpha-MP4 播放实现，基于 YYEVA | 是 |
 | `effect-gif-glide` | GIF 播放实现，基于 Glide | 是 |
 
 只引入 `effect-core` 只能使用核心调度能力，不会带入任何具体格式的播放实现。需要哪种格式，就额外引入对应模块；未引入的格式不会有播放能力，也不会带入对应三方依赖。
@@ -45,6 +47,12 @@ dependencies {
     // 需要 alpha-MP4/VAP 时引入
     implementation("com.github.gegeName:effect-mp4-vap:0.0.4")
 
+    // 需要 alpha-MP4/YYEVA 时引入
+    implementation("com.github.gegeName:effect-mp4-yyeva:0.0.4")
+
+    // 需要 alpha-MP4/AlphaPlayer 时引入
+    implementation("com.github.gegeName:effect-mp4-alpha:0.0.4")
+
     // 需要 GIF/Glide 时引入
     implementation("com.github.gegeName:effect-gif-glide:0.0.4")
 }
@@ -69,6 +77,8 @@ import com.chat.effect.IEffectPlayer
 import com.chat.effect.IEffectPlayerFactory
 import com.chat.effect.gif.glide.GifEffectPlayer
 import com.chat.effect.mp4.vap.VapMp4EffectPlayer
+// import com.chat.effect.mp4.yyeva.YyEvaMp4EffectPlayer
+// import com.chat.effect.mp4.alpha.AlphaMp4EffectPlayer
 import com.chat.effect.svga.SvgaEffectPlayer
 import java.util.concurrent.ConcurrentHashMap
 
@@ -80,12 +90,16 @@ class AppEffectPlayerFactory : IEffectPlayerFactory {
             when (type) {
                 EffectType.SVGA -> SvgaEffectPlayer()
                 EffectType.MP4 -> VapMp4EffectPlayer()
+                // EffectType.MP4 -> YyEvaMp4EffectPlayer()
+                // EffectType.MP4 -> AlphaMp4EffectPlayer()
                 EffectType.GIF -> GifEffectPlayer()
                 else -> error("no player registered for type=${type.key}")
             }
         }
 }
 ```
+
+同一个 `EffectType.MP4` 只能注册一个 MP4 播放器实现。VAP、YYEVA、AlphaPlayer 三个模块可以同时存在于仓库里，但业务工厂里按实际素材格式选择其中一个返回。
 
 多通道并发播放时，同类型不同 `channel` 不能共用同一个播放器实例，所以建议按 `(type, channel)` 缓存。
 

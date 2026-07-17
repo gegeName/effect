@@ -28,5 +28,7 @@ rootProject.name = "effect"
 include(":app")
 include(":effect-core")
 include(":effect-gif-glide")
+include(":effect-mp4-alpha")
 include(":effect-mp4-vap")
+include(":effect-mp4-yyeva")
 include(":effect-svga")

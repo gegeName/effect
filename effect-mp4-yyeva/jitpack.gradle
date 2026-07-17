@@ -1,0 +1,56 @@
+apply plugin: 'maven-publish'
+
+ext {
+    publishGroupId    = 'com.github.gegeName'
+    publishArtifactId = 'effect-mp4-yyeva'
+    publishVersion    = project.findProperty('VERSION_NAME') ?: '0.1.0-LOCAL'
+
+    publishUrl        = 'https://github.com/gegeName/effect'
+    publishDeveloperId   = 'gegeName'
+    publishDeveloperName = 'effect'
+}
+
+android {
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId    = publishGroupId
+                artifactId = publishArtifactId
+                version    = publishVersion
+
+                pom {
+                    name        = publishArtifactId
+                    description = '特效播放框架 alpha-MP4/YYEVA 实现；需要 MP4 透明特效播放能力时单独引入，依赖 YYEVA'
+                    url         = publishUrl
+
+                    licenses {
+                        license {
+                            name         = 'The Apache Software License, Version 2.0'
+                            url          = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id    = publishDeveloperId
+                            name  = publishDeveloperName
+                        }
+                    }
+                    scm {
+                        url = publishUrl
+                    }
+                }
+            }
+        }
+    }
+}
