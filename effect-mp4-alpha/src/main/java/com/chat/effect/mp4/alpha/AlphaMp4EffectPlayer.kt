@@ -80,6 +80,16 @@ open class AlphaMp4EffectPlayer @JvmOverloads constructor(
      */
     protected open fun onPlayerControllerCreated(controller: PlayerController) = Unit
 
+    /**
+     * 每次播放前回调。适合设置和单条素材绑定、或可能被 SDK 播放流程改写的属性。
+     */
+    protected open fun onBeforeStartPlay(
+        controller: PlayerController,
+        dataSource: DataSource,
+        file: File,
+        resource: EffectResource,
+    ) = Unit
+
     override fun play(localPath: String, resource: EffectResource, callback: PlayCallback) {
         val c = controller ?: return callback.onError("alpha player not attached")
         val file = File(localPath)
@@ -108,13 +118,13 @@ open class AlphaMp4EffectPlayer @JvmOverloads constructor(
             }
         })
         c.setVisibility(View.VISIBLE)
-        c.start(
-            DataSource()
-                .setBaseDir(file.parentFile?.absolutePath.orEmpty())
-                .setPortraitPath(file.name, portraitScaleType)
-                .setLandscapePath(file.name, landscapeScaleType)
-                .setLooping(looping),
-        )
+        val dataSource = DataSource()
+            .setBaseDir(file.parentFile?.absolutePath.orEmpty())
+            .setPortraitPath(file.name, portraitScaleType)
+            .setLandscapePath(file.name, landscapeScaleType)
+            .setLooping(looping)
+        onBeforeStartPlay(c, dataSource, file, resource)
+        c.start(dataSource)
     }
 
     private fun layoutByVideoSize(v: View, videoWidth: Int, videoHeight: Int) {

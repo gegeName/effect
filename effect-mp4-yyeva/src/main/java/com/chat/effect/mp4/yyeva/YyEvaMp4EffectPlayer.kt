@@ -64,6 +64,16 @@ open class YyEvaMp4EffectPlayer : IEffectPlayer {
      */
     protected open fun onPlayerViewCreated(view: EvaAnimViewV3) = Unit
 
+    /**
+     * 每次播放前回调。YYEVA 会在播放释放时重置部分状态，videoMode / normalMp4
+     * 这类和素材绑定的配置应在这里设置，而不是只在 [onPlayerViewCreated] 设置一次。
+     */
+    protected open fun onBeforeStartPlay(
+        view: EvaAnimViewV3,
+        file: File,
+        resource: EffectResource,
+    ) = Unit
+
     override fun play(localPath: String, resource: EffectResource, callback: PlayCallback) {
         val v = view ?: return callback.onError("yyeva view not attached")
         val file = File(localPath)
@@ -95,6 +105,7 @@ open class YyEvaMp4EffectPlayer : IEffectPlayer {
                 once.onComplete()
             }
         })
+        onBeforeStartPlay(v, file, resource)
         v.startPlay(file)
     }
 

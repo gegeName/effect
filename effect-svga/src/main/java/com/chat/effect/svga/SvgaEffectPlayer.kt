@@ -69,6 +69,15 @@ open class SvgaEffectPlayer : IEffectPlayer {
      */
     protected open fun onPlayerViewCreated(view: SVGAImageView) = Unit
 
+    /**
+     * 每次播放前回调。适合设置和单条素材绑定、或可能被 SDK 播放流程改写的属性。
+     */
+    protected open fun onBeforeStartPlay(
+        view: SVGAImageView,
+        file: File,
+        resource: EffectResource,
+    ) = Unit
+
     override fun play(localPath: String, resource: EffectResource, callback: PlayCallback) {
         val v = view ?: return callback.onError("svga view not attached")
         val file = File(localPath)
@@ -76,6 +85,7 @@ open class SvgaEffectPlayer : IEffectPlayer {
             return callback.onError("svga file not exists: $localPath")
         }
         try {
+            onBeforeStartPlay(v, file, resource)
             val inputStream = FileInputStream(file)
             parser.decodeFromInputStream(
                 inputStream,

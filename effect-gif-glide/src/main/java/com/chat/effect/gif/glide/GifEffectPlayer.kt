@@ -67,12 +67,22 @@ open class GifEffectPlayer : IEffectPlayer {
      */
     protected open fun onPlayerViewCreated(view: ImageView) = Unit
 
+    /**
+     * 每次播放前回调。适合设置和单条素材绑定、或可能被 SDK 播放流程改写的属性。
+     */
+    protected open fun onBeforeStartPlay(
+        view: ImageView,
+        file: File,
+        resource: EffectResource,
+    ) = Unit
+
     override fun play(localPath: String, resource: EffectResource, callback: PlayCallback) {
         val v = view ?: return callback.onError("gif view not attached")
         val file = File(localPath)
         if (!file.exists() || file.length() == 0L) {
             return callback.onError("gif file not exists: $localPath")
         }
+        onBeforeStartPlay(v, file, resource)
         Glide.with(v.context)
             .asGif()
             .load(file)
