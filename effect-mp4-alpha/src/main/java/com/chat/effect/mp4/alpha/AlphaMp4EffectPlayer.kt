@@ -99,7 +99,7 @@ open class AlphaMp4EffectPlayer @JvmOverloads constructor(
         val once = OncePlayCallback(callback)
         c.setPlayerAction(object : IPlayerAction {
             override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int, scaleType: ScaleType) {
-                layoutByVideoSize(c.getView(), videoWidth, videoHeight)
+                c.getView().post { layoutByVideoSize(c.getView(), videoWidth, videoHeight) }
             }
 
             override fun startAction() {}

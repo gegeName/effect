@@ -84,7 +84,7 @@ open class VapMp4EffectPlayer : IEffectPlayer {
         }
         v.setAnimListener(object : IAnimListener {
             override fun onVideoConfigReady(config: AnimConfig): Boolean {
-                layoutByVideoConfig(v, config)
+                v.post { layoutByVideoConfig(v, config) }
                 return true
             }
 

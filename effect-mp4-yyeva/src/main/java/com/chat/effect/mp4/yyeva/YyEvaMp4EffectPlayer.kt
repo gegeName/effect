@@ -84,7 +84,7 @@ open class YyEvaMp4EffectPlayer : IEffectPlayer {
         v.visibility = View.VISIBLE
         v.setAnimListener(object : IEvaAnimListener {
             override fun onVideoConfigReady(config: EvaAnimConfig): Boolean {
-                layoutByVideoConfig(v, config)
+                v.post { layoutByVideoConfig(v, config) }
                 return true
             }
 
